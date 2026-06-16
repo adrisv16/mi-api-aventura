@@ -1,7 +1,7 @@
 import express from "express";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
   res.json({ mensaje: "Servidor Express funcionando correctamente 🚀" });
@@ -10,3 +10,4 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
+

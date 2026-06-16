@@ -1,7 +1,11 @@
 import { connectDB } from "../../lib/mongodb.js";
 import Usuario from "../../models/Usuario.js";
+import { verificarToken } from "../../lib/auth.js";
 
 export default async function handler(req, res) {
+const decoded = verificarToken(req, res);
+if (!decoded) return; 
+
 try {
     await connectDB();
 
@@ -11,14 +15,9 @@ try {
     }
 
     res.setHeader("Allow", ["GET"]);
-    return res.status(405).json({
-    error: `Método ${req.method} no permitido`,
-    });
+    return res.status(405).json({ error: `Método ${req.method} no permitido` });
 } catch (error) {
-    console.error("Error en /api/v1/usuarios:", error);
-    return res.status(500).json({
-    error: "Error al obtener usuarios",
-    detalle: error.message,
-    });
+    res.status(500).json({ error: "Error al obtener usuarios", detalle: error.message });
 }
 }
+
