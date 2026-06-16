@@ -1,14 +1,24 @@
 export default function handler(req, res) {
-const { nombre } = req.query;
+try {
+    const { nombre } = req.query;
 
-if (!nombre) {
+    if (!nombre || nombre.trim() === "") {
+    
     return res.status(400).json({
-    mensaje: "Por favor, proporciona un nombre en la consulta."
+        error: "Falta el parámetro 'nombre'. Por favor, proporciónalo en la consulta."
+    });
+    }
+
+    res.status(200).json({
+    mensaje: `¡Hola, ${nombre}!`
+    });
+} catch (error) {
+
+    res.status(500).json({
+    error: "Ocurrió un error interno en el servidor.",
+    detalle: error.message
     });
 }
-
-res.status(200).json({
-    mensaje: `¡Hola, ${nombre}!`
-});
 }
+
 
